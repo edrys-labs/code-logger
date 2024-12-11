@@ -1,0 +1,103 @@
+
+.hidden {
+    display: none !important;
+}
+
+.logger-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logger-container h1 {
+    font-weight: 800;
+}
+.logger-container .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.logger-container .main button {
+    width: 100%;
+    font-weight: 800;
+}
+.logger-container .main button:hover {
+    border: 1px solid;
+}
+
+.stop-clear-logger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.stop-clear-logger button {
+    font-weight: 800;
+}
+
+.students-submissions p {
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-bottom: none;
+    width: 50%;
+}
+.students-submissions p:last-child{
+    border-bottom: 1px outset;
+}
+.students-submissions p span {
+    font-size: 1rem;
+    font-weight: 400;
+}
+.submission-wrapper {
+    margin-top: 10px;
+    border: 3px solid;
+    padding: 10px;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: black;
+    border: 1px solid;
+    border-radius: 10px;
+    z-index: 1000;
+    width: 300px;
+    padding: 20px;
+}
+.modal-content h3 {
+    margin: 0 0 10px 0;
+    color: #fff;
+}
+#logs-select {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.modal-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#load-error {
+    color: red;
+    font-size: .8rem;
+    font-weight: 800;
+}
+
+#scroll-up {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 5px;
+    color: white;
+    border: 2px solid;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 0 4px 0;
+}

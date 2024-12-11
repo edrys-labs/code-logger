@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+      name="description"
+      content="An Edrys module to log students code."
+    />
+    <meta name="show-in" content="*" />
+
+    <title>Code Logger</title>
+
+    <script src="https://edrys-labs.github.io/module/edrys.js"></script>
+    <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="../node_modules/monaco-editor/min/vs/editor/editor.main.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://edrys-labs.github.io/module/vendor/water.min.css"
+    />
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="./style.css"
+    />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+</head>
+<body>
+    <div class="logger-container">
+        <h1>Students' Code Logs</h1>
+
+        <div class="main">
+            <button id="start-logger">Start Monitoring</button>
+            <button id="load-logs">Load Previous Logs</button>
+
+            <!-- Load Modal -->
+            <div id="logs-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>Select a Log</h3>
+                    <select id="logs-select">
+                        <option value="" disabled selected>Choose a log</option>
+                    </select>
+                    <p id="load-error"></p>
+                    <div class="modal-bottom">
+                        <button id="load-log">Load</button>
+                        <button id="close-modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="logs hidden">
+            <div class="stop-clear-logger">
+                <button id="stop-logger">Stop</button>
+                <button id="clear-logger">Clear</button>
+                <button id="back-to-main" title="Go Back"><i class="fa fa-arrow-left"></i></button>
+            </div>
+
+            <div class="students-submissions"></div>
+
+            <button id="scroll-up" title="Go Up"><i class="fa fa-arrow-up"></i></button>
+        </div>
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
