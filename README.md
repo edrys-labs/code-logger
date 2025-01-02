@@ -9,5 +9,5 @@ A teacher can add this module to their course to monitor the code executed by th
 Import the module into your classroom, with the following url:
 
 ```html
-https://edrys-labs.github.io/code-logger/index.html
+https://edrys-labs.github.io/module-code-logger/
 ```
