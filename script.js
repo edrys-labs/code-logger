@@ -1,11 +1,13 @@
 // DOM elements 
 const mainContainer = document.querySelector('.main');
 const startLogger = document.getElementById('start-logger');
-const loadLogs = document.getElementById('load-logs');
+const loadLogsFromDB = document.getElementById('load-logs-from-db');
+const loadLogsFromFile = document.getElementById('load-logs-from-file');
 
 const logsContainer = document.querySelector('.logs');
 const stopLogger = document.getElementById('stop-logger');
 const clearLogger = document.getElementById('clear-logger');
+const downloadLogs = document.getElementById('download-logs');
 const backToMain = document.getElementById('back-to-main');
 
 const logsModal = document.getElementById('logs-modal');
@@ -104,8 +106,23 @@ stopLogger.onclick = () => {
 };
 
 clearLogger.onclick = () => {
+    downloadLogs.disabled = true;
     studentsSubmissions = [];
     renderSubmissions();
+};
+
+downloadLogs.onclick = () => {
+    const blob = new Blob([JSON.stringify(studentsSubmissions)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const username = Edrys.username.split('_')[0];
+    const stationName = Edrys.liveUser.room;
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `CodeLog_User: ${username}_${stationName}_Date: ${logsDate}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
 };
 
 backToMain.onclick = () => {
@@ -180,6 +197,9 @@ function loadLogFromDB() {
             studentsSubmissions = log.studentsSubmissions;
             renderSubmissions();
 
+            // Extract the date from the id (to be used for download)
+            logsDate = selectedLogId.split('_Date: ').pop();
+
             // No errors, hide modal and show logs container
             isLoadError = false;
             logsModal.classList.add('hidden');
@@ -198,7 +218,7 @@ function loadLogFromDB() {
 
 
 // Load Modal Handlers
-loadLogs.onclick = () => {
+loadLogsFromDB.onclick = () => {
     loadLogsIntoModal();
     logsModal.classList.remove('hidden');
 };
@@ -210,6 +230,37 @@ closeModalButton.onclick = () => {
 
 loadLog.onclick = () => {
     loadLogFromDB();
+};
+
+// Load logs from file
+loadLogsFromFile.onclick = () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    fileInput.click();
+
+    fileInput.onchange = () => {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            try {
+                const logs = JSON.parse(reader.result);
+
+                studentsSubmissions = logs;
+                renderSubmissions();
+
+                mainContainer.classList.add('hidden');
+                logsContainer.classList.remove('hidden');
+                stopLogger.disabled = true;
+                downloadLogs.disabled = true;
+            } catch (error) {
+                alert("Invalid file format. Please upload a valid JSON file.");
+            }
+        };
+
+        reader.readAsText(file);
+    };
 };
 
 
