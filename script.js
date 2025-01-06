@@ -253,7 +253,6 @@ loadLogsFromFile.onclick = () => {
                 mainContainer.classList.add('hidden');
                 logsContainer.classList.remove('hidden');
                 stopLogger.disabled = true;
-                downloadLogs.disabled = true;
             } catch (error) {
                 alert("Invalid file format. Please upload a valid JSON file.");
             }
