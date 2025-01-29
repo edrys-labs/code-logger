@@ -58,6 +58,13 @@
     padding: 10px;
 }
 
+.prev-next-btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
 .modal {
     position: fixed;
     top: 50%;

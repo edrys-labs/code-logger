@@ -9,6 +9,8 @@ const stopLogger = document.getElementById('stop-logger');
 const clearLogger = document.getElementById('clear-logger');
 const downloadLogs = document.getElementById('download-logs');
 const backToMain = document.getElementById('back-to-main');
+const prevPage = document.getElementById('prev-btn');
+const nextPage = document.getElementById('next-btn');
 
 const logsModal = document.getElementById('logs-modal');
 const logsSelect = document.getElementById('logs-select');
@@ -22,6 +24,8 @@ const scrollUpButton = document.getElementById('scroll-up');
 let isLoggingEnabled = false;
 let logsDate = null;
 let isLoadError = false;
+let currentPage = 1;
+const submissionsPerPage = 10;
 
 Edrys.onReady(() => {
     console.log('Code Logger is ready!');
@@ -50,7 +54,11 @@ function renderSubmissions() {
     const submissionsContainer = document.querySelector('.students-submissions');
     submissionsContainer.innerHTML = '';
 
-    studentsSubmissions.forEach((submission) => {
+    const startIndex = (currentPage - 1) * submissionsPerPage;
+    const endIndex = startIndex + submissionsPerPage;
+    const paginatedSubmissions = studentsSubmissions.slice(startIndex, endIndex);
+
+    paginatedSubmissions.forEach((submission) => {
         const submissionElement = document.createElement('div');
         submissionElement.classList.add('submission-wrapper');
 
@@ -71,6 +79,11 @@ function renderSubmissions() {
 
         submissionsContainer.appendChild(submissionElement);
     });
+
+    // Update pagination buttons
+    const totalPages = Math.ceil(studentsSubmissions.length / submissionsPerPage);
+    prevPage.disabled = currentPage === 1;
+    nextPage.disabled = currentPage === totalPages || totalPages === 0;
 
     // Highlight the code
     Prism.highlightAll();
@@ -108,6 +121,7 @@ stopLogger.onclick = () => {
 clearLogger.onclick = () => {
     downloadLogs.disabled = true;
     studentsSubmissions = [];
+    currentPage = 1;
     renderSubmissions();
 };
 
@@ -127,6 +141,7 @@ downloadLogs.onclick = () => {
 
 backToMain.onclick = () => {
     studentsSubmissions = [];
+    currentPage = 1;
     renderSubmissions();
 
     mainContainer.classList.remove('hidden');
@@ -276,6 +291,23 @@ scrollUpButton.onclick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
+// Pagination buttons handlers 
+prevPage.onclick = () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderSubmissions();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
+
+nextPage.onclick = () => {
+    const totalPages = Math.ceil(studentsSubmissions.length / submissionsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderSubmissions();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+};
 
 // Database implementation
 var db = new Dexie("CodeLogger");
