@@ -159,34 +159,34 @@ function storeLogInIndexedDB() {
 
 // Load logs from IndexedDB for the select field
 function loadLogsIntoModal() {
-    const username = Edrys.username;
-
-    // Create the unique prefix for the current user 
-    const currentUserPrefix = `User: ${username}`.split('_')[0];
-
     db.logs.toArray().then((allLogs) => {
         logsSelect.innerHTML = '<option value="" disabled selected>Choose a log</option>';
 
-        const userLogs = allLogs.filter(log => log.id.startsWith(currentUserPrefix));
-
-        userLogs.forEach((log, index) => {
-            const option = document.createElement('option');
-
-            // Extract station and date from the id
-            const [_, stationAndDate] = log.id.split(`${currentUserPrefix}_`);
-            option.value = log.id;
-            option.textContent = stationAndDate;
-            logsSelect.appendChild(option);
-        });
-
-        if (userLogs.length === 0) {
+        if (allLogs.length === 0) {
             const noLogsOption = document.createElement('option');
-            noLogsOption.textContent = "No logs available for this user.";
+            noLogsOption.textContent = "No logs available.";
             noLogsOption.disabled = true;
             logsSelect.appendChild(noLogsOption);
+            return;
         }
+
+        allLogs.forEach((log) => {
+            const option = document.createElement('option');
+            option.value = log.id;
+            
+            // Parse the log ID
+            // Format: "User: username_Station name_Date: datetime"
+            const parts = log.id.split('_Date:');
+            const userAndStation = parts[0];  // "User: username_Station name"
+            const dateTime = parts[1];        // " datetime"
+            
+            const stationName = userAndStation.split('_')[1]; // "Station name"
+            
+            option.textContent = `${stationName} - Date:${dateTime}`;
+            logsSelect.appendChild(option);
+        });
     });
-};
+}
 
 // Load log from IndexedDB
 function loadLogFromDB() {
