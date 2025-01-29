@@ -9,6 +9,7 @@ const stopLogger = document.getElementById('stop-logger');
 const clearLogger = document.getElementById('clear-logger');
 const downloadLogs = document.getElementById('download-logs');
 const backToMain = document.getElementById('back-to-main');
+const paginationButtons = document.querySelector('.prev-next-btns');
 const prevPage = document.getElementById('prev-btn');
 const nextPage = document.getElementById('next-btn');
 
@@ -29,6 +30,12 @@ const submissionsPerPage = 10;
 
 Edrys.onReady(() => {
     console.log('Code Logger is ready!');
+
+    // Hide pagination if no submissions
+    if (studentsSubmissions.length === 0) {
+        paginationButtons.classList.add('hidden');
+        return;
+    };
 });
 
 let studentsSubmissions = []; // To store the code submissions
@@ -53,6 +60,9 @@ Edrys.onMessage(({ from, subject, body }) => {
 function renderSubmissions() {
     const submissionsContainer = document.querySelector('.students-submissions');
     submissionsContainer.innerHTML = '';
+
+    // Show pagination if there are submissions
+    paginationButtons.classList.remove('hidden');
 
     const startIndex = (currentPage - 1) * submissionsPerPage;
     const endIndex = startIndex + submissionsPerPage;
